@@ -3,17 +3,22 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"go.temporal.io/sdk/client"
 
-	"money-transfer-project-template-go/app"
+	"temporal-money-transfer/app"
 )
 
 // @@@SNIPSTART money-transfer-project-template-go-start-workflow
 func main() {
-	// Create the client object just once per process
-	c, err := client.Dial(client.Options{})
+	clientOptions, err := app.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
 
+	// Create the client object just once per process
+	c, err := client.Dial(clientOptions)
 	if err != nil {
 		log.Fatalln("Unable to create Temporal client:", err)
 	}

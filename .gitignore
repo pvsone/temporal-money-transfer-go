@@ -16,3 +16,6 @@
 
 # IDE dirs
 .idea/
+
+# certstrap depot directory
+out/

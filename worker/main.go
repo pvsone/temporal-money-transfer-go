@@ -2,17 +2,22 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 
-	"money-transfer-project-template-go/app"
+	"temporal-money-transfer/app"
 )
 
 // @@@SNIPSTART money-transfer-project-template-go-worker
 func main() {
+	clientOptions, err := app.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
 
-	c, err := client.Dial(client.Options{})
+	c, err := client.Dial(clientOptions)
 	if err != nil {
 		log.Fatalln("Unable to create Temporal client.", err)
 	}
