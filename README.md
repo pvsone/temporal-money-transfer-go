@@ -94,6 +94,7 @@ Now you can see the workflow run to completion.
 
 
 ## Let's Encrypt Certificates
+_Warning: You probably don't want to use Let's Encrypt to create client certificates.  While it will work technically, it is advisable to create your own Certificate Authority to use for issuing and managing client certificates.  See https://community.letsencrypt.org/t/can-i-create-client-certificates-for-a-received-letsencrypt-certificate/78627_
 
 To use [Let's Encrypt](https://letsencrypt.org/), I repeated the steps with the following modifications:
 
