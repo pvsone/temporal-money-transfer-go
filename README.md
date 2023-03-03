@@ -102,8 +102,8 @@ To use [Let's Encrypt](https://letsencrypt.org/), I repeated the steps with the 
 Use [acme.sh](https://github.com/acmesh-official/acme.sh) to generate the certs from a shell.  For me, I have a personal domain (pvslab.net) registered with AWS Route53, so I issued the cert using the [ACME Route53 DNS API](https://github.com/acmesh-official/acme.sh/wiki/dnsapi#10-use-amazon-route53-domain-api) based verification.
 
 ```bash
-export  AWS_ACCESS_KEY_ID=XXXXXXXXXX
-export  AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXX
+export AWS_ACCESS_KEY_ID=XXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXX
 
 acme.sh --issue \
   --dns dns_aws \
