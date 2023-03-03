@@ -112,7 +112,7 @@ acme.sh --issue \
   --preferred-chain "ISRG"
 ```
 
-The `--server` and `--preferred-chain` values are important to generate certs fully compatible with Temporal Cloud.  I tried a number of other options, which I could not get to work.  I imagine there are other values that could be used here, but these are the ones that finally worked for me.
+The `--server` and `--preferred-chain` values are important to generate certs fully compatible with Temporal Cloud. I imagine there are other values that could be used here, but these are the ones that worked for me.
 
 The important files generated from the `acme.sh` command are:
 * Cert: Written to ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer
