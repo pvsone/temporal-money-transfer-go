@@ -91,3 +91,69 @@ go run worker/main.go \
 ```
 
 Now you can see the workflow run to completion. 
+
+
+## Let's Encrypt Certificates
+
+To use [Let's Encrypt](https://letsencrypt.org/), I repeated the steps with the following modifications:
+
+### Step 2: Issue CA Certificates
+
+Use [acme.sh](https://github.com/acmesh-official/acme.sh) to generate the certs from a shell.  For me, I have a personal domain (pvslab.net) registered with AWS Route53, so I issued the cert using the [ACME Route53 DNS API](https://github.com/acmesh-official/acme.sh/wiki/dnsapi#10-use-amazon-route53-domain-api) based verification.
+
+```bash
+export  AWS_ACCESS_KEY_ID=XXXXXXXXXX
+export  AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXX
+
+acme.sh --issue \
+  --dns dns_aws \
+  --domain sullivan-dev.tcld.pvslab.net \
+  --server letsencrypt \
+  --preferred-chain "ISRG"
+```
+
+The `--server` and `--preferred-chain` values are important to generate certs fully compatible with Temporal Cloud.  I tried a number of other options, which I could not get to work.  I imagine there are other values that could be used here, but these are the ones that finally worked for me.
+
+The important files generated from the `acme.sh` command are:
+* Cert: Written to ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer
+* Key: Written to ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key
+* Intermediate CA cert: Written to ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/ca.cer
+
+The Intermeidate CA cert must be combined with the Root CA cert before uploading to Temporal Cloud.  Get the CA for the ISRG Root from the [certificates](https://letsencrypt.org/certificates/) page on Let's Encrypt or using the following command:
+
+```bash
+# get the ISRG self-signed Root CA from letsencrypt
+curl -O https://letsencrypt.org/certs/isrgrootx1.pem
+```
+
+Then combine Intermediate CA with the Root CA in a single PEM file
+```bash
+# combine the Intermediate CA with the ISRG Root CA
+cat ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/ca.cer isrgrootx1.pem > cacerts.pem
+```
+
+### Step 3: Update the Namespace
+
+Update the Namespace configuration with the following field values:
+* Set **CA Certificates** field value to the contents of the file `cacerts.pem`.
+* Set **Certificate Filters** > **Filter 1** > **Common Name** field value to `sullivan-dev.tcld.pvslab.net`
+
+### Step 4: Run the Workflow
+
+```bash
+go run start/main.go \
+  -client-cert ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
+  -client-key ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key \
+  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID}
+```
+
+### Step 5: Run the Worker
+
+```bash
+go run worker/main.go \
+  -client-cert ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
+  -client-key ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key \
+  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID}
+```
