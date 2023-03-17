@@ -65,10 +65,10 @@ export NAMESPACE_ID=${NAMESPACE_NAME}.${ACCOUNT_ID}
 
 ```bash
 go run start/main.go \
-  -client-cert ./out/${NAMESPACE_NAME}.crt \
-  -client-key ./out/${NAMESPACE_NAME}.key \
-  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
-  -namespace ${NAMESPACE_ID}
+  -address ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID} \
+  -tls_cert_path ./out/${NAMESPACE_NAME}.crt \
+  -tls_key_path ./out/${NAMESPACE_NAME}.key
 ```
 
 Observe that Temporal Cloud Web UI reflects the workflow, but it is still in "Running" status. This is because there is no Workflow or Activity Worker yet listening to the `TRANSFER_MONEY_TASK_QUEUE` task queue to process this work.
@@ -84,10 +84,10 @@ export ACCOUNT_ID=a1bc2
 export NAMESPACE_ID=${NAMESPACE_NAME}.${ACCOUNT_ID}
 
 go run worker/main.go \
-  -client-cert ./out/${NAMESPACE_NAME}.crt \
-  -client-key ./out/${NAMESPACE_NAME}.key \
-  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
-  -namespace ${NAMESPACE_ID}
+  -address ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID} \
+  -tls_cert_path ./out/${NAMESPACE_NAME}.crt \
+  -tls_key_path ./out/${NAMESPACE_NAME}.key
 ```
 
 Now you can see the workflow run to completion. 
@@ -143,18 +143,18 @@ Update the Namespace configuration with the following field values:
 
 ```bash
 go run start/main.go \
-  -client-cert ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
-  -client-key ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key \
-  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
-  -namespace ${NAMESPACE_ID}
+  -address ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID} \
+  -tls_cert_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
+  -tls_key_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key
 ```
 
 ### Step 5: Run the Worker
 
 ```bash
 go run worker/main.go \
-  -client-cert ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
-  -client-key ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key \
-  -target-host ${NAMESPACE_ID}.tmprl.cloud:7233 \
-  -namespace ${NAMESPACE_ID}
+  -address ${NAMESPACE_ID}.tmprl.cloud:7233 \
+  -namespace ${NAMESPACE_ID} \
+  -tls_cert_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
+  -tls_key_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key
 ```

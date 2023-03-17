@@ -19,6 +19,8 @@
 
 # certstrap depot directory
 out/
+out
 
 # direnv
 .envrc
+local.env
