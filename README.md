@@ -19,7 +19,7 @@ git clone https://github.com/pvsone/temporal-money-transfer
 cd pvsone-money-transfer
 ```
 
-### Step 2: Issue CA Certificates
+### Step 2: Issue Certificates
 
 The Temporal docs provide options for [Issuing CA Certificates](https://docs.temporal.io/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates)
 
