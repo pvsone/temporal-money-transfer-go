@@ -10,7 +10,6 @@ import (
 	"temporal-money-transfer/app"
 )
 
-// @@@SNIPSTART money-transfer-project-template-go-worker
 func main() {
 	clientOptions, err := app.ParseClientOptionFlags(os.Args[1:])
 	if err != nil {
@@ -37,5 +36,3 @@ func main() {
 		log.Fatalln("unable to start Worker", err)
 	}
 }
-
-// @@@SNIPEND
