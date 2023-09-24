@@ -66,14 +66,14 @@ export TEMPORAL_NAMESPACE=${TEMPORAL_NAMESPACE_NAME}.${TEMPORAL_ACCOUNT_ID}
 Install the Temporal CLI is you have not previously done so.  See [Temporal CLI](https://docs.temporal.io/cli/#installation) for instructions.
 
 Set the following environment variables for use by the Temporal CLI
-```sh
+```bash
 export TEMPORAL_ADDRESS=${TEMPORAL_NAMESPACE}.tmprl.cloud:7233 
 export TEMPORAL_TLS_CERT=./out/${TEMPORAL_NAMESPACE_NAME}.crt
 export TEMPORAL_TLS_KEY=./out/${TEMPORAL_NAMESPACE_NAME}.key
 ```
 
 Test the connection to the Temporal Cloud service using the Temporal CLI
-```sh
+```bash
 temporal operator namespace describe ${TEMPORAL_NAMESPACE}
 # the command will return the Namespace details if successful
 ```
@@ -118,17 +118,17 @@ The worker has been built and published to Docker Hub as `pvsone/temporal-money-
 To deploy the worker to Kubernetes, run the following commands (the environment variables `${TEMPORAL_ADDRESS}`, `${TEMPORAL_NAMESPACE}`, `${TEMPORAL_TLS_CERT}`, and `${TEMPORAL_TLS_KEY}` must be set):
 
 Create a secret for the TLS client certificate and key
-```sh
+```bash
 kubectl create secret generic client-credential \
-    --from-file=tls.key=${TEMPORAL_TLS_KEY} \
-    --from-file=tls.crt=${TEMPORAL_TLS_CERT}
+  --from-file=tls.key=${TEMPORAL_TLS_KEY} \
+  --from-file=tls.crt=${TEMPORAL_TLS_CERT}
 ```
 
 There are two manifests in the manifests directory for deploying the worker to Kubernetes
 * `worker-deploy.yaml` - Deployment for the worker - where the worker is resposible for the mTLS connection
 * `worker-deploy-istio.yaml` - Deployment for the worker - where Istio is responsible for the mTLS connection.  This requires that Istio has been installed and that the `istio-injection` label has been applied to the namespace where the worker will be deployed.
 
-```sh
+```bash
 # deploy the worker
 envsubst < manifests/worker-deploy.yaml | kubectl apply -f -
 
@@ -136,6 +136,10 @@ envsubst < manifests/worker-deploy.yaml | kubectl apply -f -
 envsubst < manifests/worker-deploy-istio.yaml | kubectl apply -f -
 ```
 
+Start the workflow using the CLI
+```bash
+temporal workflow start --type MoneyTransfer -t TRANSFER_MONEY_TASK_QUEUE -i '{"SourceAccount": "85-150","TargetAccount": "43-812","Amount": 250,"ReferenceID": "12345"}'
+```
 
 # Attic
 Old stuff that shouldn't be used, but I'm keeping around for reference.
@@ -205,12 +209,3 @@ go run worker/main.go \
   -tls_cert_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.cer \
   -tls_key_path ~/.acme.sh/sullivan-dev.tcld.pvslab.net_ecc/sullivan-dev.tcld.pvslab.net.key
 ```
-
-go run start/main.go \
-  -address ${TEMPORAL_ADDRESS} \
-  -namespace ${TEMPORAL_NAMESPACE} \
-  -tls_cert_path ${TEMPORAL_TLS_CERT} \
-  -tls_key_path ${TEMPORAL_TLS_KEY}
-
-
-
