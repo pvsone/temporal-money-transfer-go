@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: temporal-money-transfer-worker
+  name: temporal-money-transfer-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temporal-money-transfer-worker
+  template:
+    metadata:
+      labels:
+        app: temporal-money-transfer-worker
+    spec:
+      containers:
+      - image: pvsone/temporal-money-transfer-worker:1.0.0
+        name: temporal-money-transfer-worker
+        env:
+        - name: TEMPORAL_ADDRESS
+          value: ${TEMPORAL_ADDRESS}
+        - name: TEMPORAL_NAMESPACE
+          value: ${TEMPORAL_NAMESPACE}
+        - name: TEMPORAL_TLS_CERT
+          value: /certs/tls.crt
+        - name: TEMPORAL_TLS_KEY
+          value: /certs/tls.key
+        volumeMounts:
+        - name: client-credential-volume
+          mountPath: /certs
+          readOnly: true
+      volumes:
+      - name: client-credential-volume
+        secret:
+          secretName: client-credential

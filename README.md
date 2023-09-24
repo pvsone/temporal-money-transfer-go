@@ -112,8 +112,29 @@ go run worker/main.go
 
 Now you can see the workflow run to completion. 
 
+## Deploy Worker to Kubernetes
+The worker has been built and published to Docker Hub as `pvsone/temporal-money-transfer-worker:latest`.  
 
+To deploy the worker to Kubernetes, run the following commands (the environment variables `${TEMPORAL_ADDRESS}`, `${TEMPORAL_NAMESPACE}`, `${TEMPORAL_TLS_CERT}`, and `${TEMPORAL_TLS_KEY}` must be set):
 
+Create a secret for the TLS client certificate and key
+```sh
+kubectl create secret generic client-credential \
+    --from-file=tls.key=${TEMPORAL_TLS_KEY} \
+    --from-file=tls.crt=${TEMPORAL_TLS_CERT}
+```
+
+There are two manifests in the manifests directory for deploying the worker to Kubernetes
+* `worker-deploy.yaml` - Deployment for the worker - where the worker is resposible for the mTLS connection
+* `worker-deploy-istio.yaml` - Deployment for the worker - where Istio is responsible for the mTLS connection.  This requires that Istio has been installed and that the `istio-injection` label has been applied to the namespace where the worker will be deployed.
+
+```sh
+# deploy the worker
+envsubst < manifests/worker-deploy.yaml | kubectl apply -f -
+
+# alternatively, deploy the worker to a namespace with Istio enabled
+envsubst < manifests/worker-deploy-istio.yaml | kubectl apply -f -
+```
 
 
 # Attic
