@@ -68,8 +68,8 @@ func ParseClientOptionFlags(args []string) (client.Options, error) {
 
 	address := set.String("address", os.Getenv("TEMPORAL_ADDRESS"), "host:port for Temporal frontend service [$TEMPORAL_ADDRESS]")
 	namespace := set.String("namespace", os.Getenv("TEMPORAL_NAMESPACE"), "Temporal workflow namespace [$TEMPORAL_NAMESPACE]")
-	clientCert := set.String("tls_cert_path", os.Getenv("TEMPORAL_TLS_CERT"), "Path to client x509 certificate [$TEMPORAL_CLIENT_TLS_CERT]")
-	clientKey := set.String("tls_key_path", os.Getenv("TEMPORAL_TLS_KEY"), "Path to client certificate private key [$TEMPORAL_CLIENT_TLS_KEY]")
+	clientCert := set.String("tls_cert_path", os.Getenv("TEMPORAL_TLS_CERT"), "Path to client x509 certificate [$TEMPORAL_TLS_CERT]")
+	clientKey := set.String("tls_key_path", os.Getenv("TEMPORAL_TLS_KEY"), "Path to client certificate private key [$TEMPORAL_TLS_KEY]")
 
 	if err := set.Parse(args); err != nil {
 		return client.Options{}, fmt.Errorf("failed parsing args: %w", err)
