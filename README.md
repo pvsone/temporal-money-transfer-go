@@ -138,7 +138,10 @@ envsubst < manifests/worker-deploy-istio.yaml | kubectl apply -f -
 
 Start the workflow using the CLI
 ```bash
-temporal workflow start --type MoneyTransfer -t TRANSFER_MONEY_TASK_QUEUE -i '{"SourceAccount": "85-150","TargetAccount": "43-812","Amount": 250,"ReferenceID": "12345"}'
+temporal workflow start \
+  --type MoneyTransfer \
+  -t TRANSFER_MONEY_TASK_QUEUE \
+  -i '{"SourceAccount": "85-150","TargetAccount": "43-812","Amount": 250,"ReferenceID": "12345"}'
 ```
 
 # Attic
