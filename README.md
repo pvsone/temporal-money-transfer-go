@@ -115,7 +115,7 @@ Now you can see the workflow run to completion.
 ## Deploy Worker to Kubernetes
 The worker has been built and published to Docker Hub as `pvsone/temporal-money-transfer-worker:latest`.  
 
-To deploy the worker to Kubernetes, run the following commands (the environment variables `${TEMPORAL_ADDRESS}`, `${TEMPORAL_NAMESPACE}`, `${TEMPORAL_TLS_CERT}`, and `${TEMPORAL_TLS_KEY}` must be set):
+To deploy the worker to Kubernetes, run the following commands (Note: the environment variables `${TEMPORAL_ADDRESS}`, `${TEMPORAL_NAMESPACE}`, `${TEMPORAL_TLS_CERT}`, and `${TEMPORAL_TLS_KEY}` *must* be set):
 
 Create a secret for the TLS client certificate and key
 ```bash
