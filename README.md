@@ -63,7 +63,7 @@ export TEMPORAL_NAMESPACE=${TEMPORAL_NAMESPACE_NAME}.${TEMPORAL_ACCOUNT_ID}
 
 #### Test the Namespace Config using the Temporal CLI
 
-Install the Temporal CLI is you have not previously done so.  See [Temporal CLI](https://docs.temporal.io/cli/#installation) for instructions.
+Install the Temporal CLI if you have not previously done so.  See [Temporal CLI](https://docs.temporal.io/cli/#installation) for instructions.
 
 Set the following environment variables for use by the Temporal CLI
 ```bash
