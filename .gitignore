@@ -18,9 +18,12 @@
 .idea/
 
 # certstrap depot directory
-out/
 out
 
 # direnv
 .envrc
 local.env
+
+# exclude Docker (for now)
+Dockerfile
+.dockerignore
